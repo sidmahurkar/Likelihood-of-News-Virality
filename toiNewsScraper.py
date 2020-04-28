@@ -5,6 +5,7 @@ import requests
 import newspaper
 import pandas as pd
 
+
 def scrapeNews(URL):
 
 	url = URL
@@ -26,7 +27,12 @@ def scrapeNews(URL):
 	# for article in headlines.articles:
 	for i in urls:
 		article = Article(i, language = "en")
-		article.download()
+
+		try:
+			article.download()
+		except ArticleException:
+			pass
+
 		article.parse()
 		article.nlp()
 
@@ -46,6 +52,42 @@ def scrapeNews(URL):
 	news_data_df = pd.DataFrame(news_data)
 	return news_data_df
 
-# url = "https://timesofindia.indiatimes.com/home/headlines"
 
-# scrapeNews(url)
+def toiScraper():
+
+	url = "https://timesofindia.indiatimes.com/world"
+	request = requests.get(url)
+
+	soup = BeautifulSoup(request.content, 'html5lib') 
+
+	table = soup.findAll('a', attrs = {'class':'w_img'})
+
+	news=[]
+
+	for row in table: 
+		if not row['href'].startswith('http'):
+			news.append('https://timesofindia.indiatimes.com'+row['href'])
+
+	dataframe=[]
+	for i in news:
+		article = Article(i, language="en")
+		article.download() 
+		article.parse() 
+		article.nlp()
+
+		data={}
+		data['authors'] = article.authors
+		data['publish date'] = article.publish_date
+		data['text'] = article.text
+		data['images'] = article.images
+		data['movies'] = article.movies
+		data['keywords'] = article.keywords
+		data['summary'] = article.summary
+
+		dataframe.append(data)
+
+	dataset=pd.DataFrame(dataframe)
+
+	return dataset
+
+# a = toiscraper()
