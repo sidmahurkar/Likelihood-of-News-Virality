@@ -79,8 +79,8 @@ def toiScraper():
 		data['authors'] = article.authors
 		data['publish date'] = article.publish_date
 		data['text'] = article.text
-		data['images'] = article.images
-		data['movies'] = article.movies
+		# data['images'] = article.images
+		# data['movies'] = article.movies
 		data['keywords'] = article.keywords
 		data['summary'] = article.summary
 
@@ -90,4 +90,5 @@ def toiScraper():
 
 	return dataset
 
-# a = toiscraper()
+a = toiScraper()
+print(a)
