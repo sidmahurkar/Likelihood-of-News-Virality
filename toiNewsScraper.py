@@ -41,8 +41,11 @@ def scrapeNews(URL):
 
 		news_data.append(data)
 
-		print(news_data)
+		# print(news_data)
 
-url = "https://timesofindia.indiatimes.com/home/headlines"
+	news_data_df = pd.DataFrame(news_data)
+	return news_data_df
 
-scrapeNews(url)
+# url = "https://timesofindia.indiatimes.com/home/headlines"
+
+# scrapeNews(url)
